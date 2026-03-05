@@ -16,12 +16,12 @@ impl std::fmt::Display for Kind {
 
 // &str -> Kind?
 impl std::str::FromStr for Kind {
-    type Err = ();
+    type Err = crate::feature::user::provider::error::ParseProviderKindError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
             "google" => Ok(Self::Google),
-            _ => Err(()),
+            _ => Err(crate::feature::user::provider::error::ParseProviderKindError),
         }
     }
 }

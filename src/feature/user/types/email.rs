@@ -9,7 +9,7 @@ impl Email {
     /// # Returns
     /// - `true`: 통과
     /// - `false`: 유효하지 않음
-    /// 
+    ///
     pub fn validate(&self) -> Result<(), crate::feature::user::error::InvalidEmailFormatError> {
         use crate::feature::user::error::InvalidEmailFormatError;
         let s = &self.0;

@@ -49,7 +49,8 @@ impl mysql_async::prelude::ToValue for Subject {
 impl serde::Serialize for Subject {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
     where
-        S: serde::Serializer {
+        S: serde::Serializer,
+    {
         let string = self.to_string();
         serializer.serialize_str(&string)
     }
@@ -59,7 +60,8 @@ impl serde::Serialize for Subject {
 impl<'de> serde::Deserialize<'de> for Subject {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
     where
-        D: serde::Deserializer<'de> {
+        D: serde::Deserializer<'de>,
+    {
         let string = String::deserialize(deserializer)?;
         Ok(Self(string))
     }

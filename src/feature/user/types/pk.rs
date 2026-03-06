@@ -1,7 +1,21 @@
 /// 내부용 사용자 아이디
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 #[repr(transparent)]
-pub struct PK(i64);
+pub struct PK(u64);
+
+// u64 -> PK
+impl From<u64> for PK {
+    fn from(value: u64) -> Self {
+        Self(value)
+    }
+}
+
+// PK -> u64
+impl From<PK> for u64 {
+    fn from(value: PK) -> Self {
+        value.0
+    }
+}
 
 // PK -> String
 impl std::fmt::Display for PK {
@@ -25,7 +39,7 @@ impl TryFrom<mysql_async::Value> for PK {
 
     fn try_from(value: mysql_async::Value) -> Result<Self, Self::Error> {
         match value {
-            mysql_async::Value::Int(num) => Ok(Self(num)),
+            mysql_async::Value::UInt(num) => Ok(Self(num)),
             _ => Err(mysql_async::FromValueError(value)),
         }
     }
@@ -39,7 +53,7 @@ impl mysql_async::prelude::FromValue for PK {
 // PK -> Value
 impl mysql_async::prelude::ToValue for PK {
     fn to_value(&self) -> mysql_async::Value {
-        mysql_async::Value::Int(self.0)
+        mysql_async::Value::UInt(self.0)
     }
 }
 
@@ -49,7 +63,7 @@ impl serde::Serialize for PK {
     where
         S: serde::Serializer,
     {
-        serializer.serialize_i64(self.0)
+        serializer.serialize_u64(self.0)
     }
 }
 
@@ -59,7 +73,7 @@ impl<'de> serde::Deserialize<'de> for PK {
     where
         D: serde::Deserializer<'de>,
     {
-        let num = i64::deserialize(deserializer)?;
+        let num = u64::deserialize(deserializer)?;
         Ok(Self(num))
     }
 }

@@ -4,6 +4,7 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-mysql_async = { version = "0.36" }
+chrono = { version = "0.4" }
+mysql_async = { version = "0.36", features = [ "chrono" ] }
 serde = { version = "1.0", features = [ "derive" ] }
-uuid = { version = "1.21", features = [ "v4" ] }
+uuid = { version = "1.22", features = [ "v4" ] }

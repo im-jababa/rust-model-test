@@ -73,7 +73,14 @@ impl User {
         pool: &Pool,
         filter: model::Filter,
     ) -> Result<Vec<Self>, mysql_async::Error> {
-        todo!()
+        let mut conn = pool.get_conn().await?;
+        let stmt = format!(
+            include_str!("sql/get_list.sql"),
+            filter.sql_provider_filter_placeholder(),
+        );
+        let params: mysql_async::Params = filter.into();
+        let rows: Vec<row::SelectRow> = conn.exec(stmt, params).await?;
+        Ok(rows.into_iter().map(|v| v.into()).collect())
     }
 
     /// PK로 사용자 찾기

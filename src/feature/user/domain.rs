@@ -47,7 +47,7 @@ impl User {
         builder: model::Builder,
     ) -> Result<Self, mysql_async::Error> {
         let mut conn = pool.get_conn().await?;
-        let stmt = include_str!("sql/insert.sql");
+        let stmt = include_str!("sql/new.sql");
         let params: row::InsertRow = builder.into();
         conn.exec_drop(stmt, params).await?;
         let pk: PK = conn.last_insert_id().expect("User PK must exist").into();
